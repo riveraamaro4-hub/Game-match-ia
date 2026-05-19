@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GameMatch IA PRO</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #0f172a;
+  color: white;
+  text-align: center;
+}
+
+.container {
+  max-width: 400px;
+  margin: auto;
+  background: #1e293b;
+  padding: 20px;
+  border-radius: 15px;
+}
+
+select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #38bdf8;
+  font-weight: bold;
+}
+
+.resultado {
+  margin-top: 15px;
+  background: #334155;
+  padding: 15px;
+  border-radius: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🎮 GameMatch IA PRO</h1>
+
+<label>Género</label>
+<select id="generoSel">
+  <option>Acción</option>
+  <option>Aventura</option>
+  <option>Deportes</option>
+  <option>Shooter</option>
+  <option>Terror</option>
+  <option>RPG</option>
+</select>
+
+<label>Modo</label>
+<select id="modoSel">
+  <option>Solo</option>
+  <option>Multijugador</option>
+</select>
+
+<label>Historia</label>
+<select id="historiaSel">
+  <option>Sí</option>
+  <option>No</option>
+</select>
+
+<label>Ritmo</label>
+<select id="ritmoSel">
+  <option>Rápido</option>
+  <option>Tranquilo</option>
+</select>
+
+<button onclick="recomendar()">🔍 Recomendar</button>
+
+<div id="resultado" class="resultado"></div>
+</div>
+
+<script>
+function recomendar() {
+
+// ✅ AHORA SÍ toma bien los valores
+let genero = document.getElementById("generoSel").value;
+let modo = document.getElementById("modoSel").value;
+let historia = document.getElementById("historiaSel").value;
+let ritmo = document.getElementById("ritmoSel").value;
+
+const juegos = [
+
+{nombre:"God of War Ragnarök", genero:"Acción", modo:"Solo", historia:"Sí", ritmo:"Rápido"},
+{nombre:"GTA V", genero:"Acción", modo:"Solo", historia:"Sí", ritmo:"Rápido"},
+{nombre:"The Last of Us", genero:"Aventura", modo:"Solo", historia:"Sí", ritmo:"Tranquilo"},
+{nombre:"Red Dead Redemption 2", genero:"Aventura", modo:"Solo", historia:"Sí", ritmo:"Tranquilo"},
+{nombre:"FIFA 23", genero:"Deportes", modo:"Multijugador", historia:"No", ritmo:"Rápido"},
+{nombre:"eFootball", genero:"Deportes", modo:"Multijugador", historia:"No", ritmo:"Rápido"},
+{nombre:"Call of Duty Warzone", genero:"Shooter", modo:"Multijugador", historia:"No", ritmo:"Rápido"},
+{nombre:"Fortnite", genero:"Shooter", modo:"Multijugador", historia:"No", ritmo:"Rápido"},
+{nombre:"Resident Evil 4", genero:"Terror", modo:"Solo", historia:"Sí", ritmo:"Rápido"},
+{nombre:"Outlast", genero:"Terror", modo:"Solo", historia:"Sí", ritmo:"Tranquilo"},
+{nombre:"Elden Ring", genero:"RPG", modo:"Solo", historia:"Sí", ritmo:"Rápido"},
+{nombre:"The Witcher 3", genero:"RPG", modo:"Solo", historia:"Sí", ritmo:"Tranquilo"},
+{nombre:"Minecraft", genero:"Aventura", modo:"Multijugador", historia:"No", ritmo:"Tranquilo"},
+{nombre:"Rocket League", genero:"Deportes", modo:"Multijugador", historia:"No", ritmo:"Rápido"},
+{nombre:"Apex Legends", genero:"Shooter", modo:"Multijugador", historia:"No", ritmo:"Rápido"}
+
+];
+
+let resultados = [];
+
+juegos.forEach(j => {
+let puntaje = 0;
+
+if (j.genero === genero) puntaje += 3;
+if (j.modo === modo) puntaje += 2;
+if (j.historia === historia) puntaje += 2;
+if (j.ritmo === ritmo) puntaje += 1;
+
+// pequeña variación para que no sea siempre igual
+puntaje += Math.random();
+
+resultados.push({juego: j, score: puntaje});
+});
+
+resultados.sort((a,b) => b.score - a.score);
+
+let top3 = resultados.slice(0,3);
+
+// 🔥 ahora muestra lo que elegiste + explicación
+let html = `<h2>🎯 Según tus elecciones:</h2>
+<p>🎮 Género: ${genero}</p>
+<p>👥 Modo: ${modo}</p>
+<p>📖 Historia: ${historia}</p>
+<p>⚡ Ritmo: ${ritmo}</p>
+<hr>
+<h3>Recomendaciones:</h3>`;
+
+top3.forEach(r => {
+html += `<p>🎮 <b>${r.juego.nombre}</b></p>`;
+});
+
+document.getElementById("resultado").innerHTML = html;
+
+}
+</script>
+
+</body>
+</html>
